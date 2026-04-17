@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Classrooms</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.container{
+width:80%;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:10px;
+}
+
+.room{
+border:1px solid black;
+padding:10px;
+margin:10px;
+display:flex;
+justify-content:space-between;
+}
+
+button{
+padding:5px;
+margin:2px;
+}
+
+#popup{
+display:none;
+position:fixed;
+top:20%;
+left:35%;
+background:white;
+padding:20px;
+border:2px solid black;
+}
+
+img{
+width:200px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1 align="center">Classrooms</h1>
+
+<div class="container">
+
+<input type="text" placeholder="Search classroom"><br><br>
+
+<!-- ROOM 101 -->
+<div class="room">
+
+<div>
+<h3>Room 101</h3>
+<p>Capacity: 60 Students</p>
+<p>Status: <span id="status1" style="color:green;">Free</span></p>
+</div>
+
+<div>
+<button class="book-btn" onclick="bookRoom(1)">Book</button>
+<button onclick="cancelRoom(1)">Cancel</button>
+<button onclick="view()">3D View</button>
+</div>
+
+</div>
+
+<!-- ROOM 102 -->
+<div class="room">
+
+<div>
+<h3>Room 102</h3>
+<p>Capacity: 40 Students</p>
+<p>Status: <span id="status2" style="color:red;">Booked</span></p>
+</div>
+
+<div>
+<button class="book-btn" onclick="bookRoom(2)">Book</button>
+<button onclick="cancelRoom(2)">Cancel</button>
+<button onclick="view()">3D View</button>
+</div>
+
+</div>
+
+<!-- LAB 1 -->
+<div class="room">
+
+<div>
+<h3>Lab 1</h3>
+<p>Capacity: 30 Students</p>
+<p>Status: <span id="status3" style="color:green;">Free</span></p>
+</div>
+
+<div>
+<button class="book-btn" onclick="bookRoom(3)">Book</button>
+<button onclick="cancelRoom(3)">Cancel</button>
+<button onclick="view()">3D View</button>
+</div>
+
+</div>
+
+</div>
+
+<!-- POPUP -->
+<div id="popup">
+<h3>Classroom View</h3>
+<img src="images/class.jpg">
+<br><br>
+<button onclick="closeview()">Close</button>
+</div>
+
+<script>
+
+// POPUP
+function view(){
+    document.getElementById("popup").style.display="block";
+}
+
+function closeview(){
+    document.getElementById("popup").style.display="none";
+}
+
+// BOOK ROOM
+function bookRoom(id){
+    let status = document.getElementById("status" + id);
+
+    if(status.innerHTML === "Booked"){
+        alert("Room already booked!");
+        return;
+    }
+
+    status.innerHTML = "Booked";
+    status.style.color = "red";
+}
+
+// CANCEL ROOM
+function cancelRoom(id){
+    let status = document.getElementById("status" + id);
+
+    status.innerHTML = "Free";
+    status.style.color = "green";
+}
+
+// ROLE CONTROL
+let role = localStorage.getItem("role");
+
+if(role === "student"){
+    document.querySelectorAll(".book-btn").forEach(btn => {
+        btn.style.display = "none";
+    });
+
+    document.querySelectorAll("button").forEach(btn => {
+        if(btn.innerText === "Cancel"){
+            btn.style.display = "none";
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>

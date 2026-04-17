@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Classroom Management System</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f5f5;
+}
+
+/* SECTION */
+.section{
+background:white;
+margin:20px;
+padding:20px;
+border-radius:10px;
+}
+
+/* ROOM */
+.room{
+border:1px solid black;
+padding:10px;
+margin:10px 0;
+display:flex;
+justify-content:space-between;
+}
+
+/* BUTTON */
+button{
+padding:5px 10px;
+margin:3px;
+cursor:pointer;
+}
+
+/* INPUT */
+input{
+padding:5px;
+margin:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Classroom Management System</h1>
+
+<h3 id="roleText"></h3>
+
+<!-- CLASSROOMS -->
+<div class="section">
+<h2>Classrooms</h2>
+
+<input type="text" id="search" placeholder="Search room" onkeyup="searchRoom()">
+
+<div class="room">
+<div>
+<h3>Room 101</h3>
+<p>Capacity: 60</p>
+<p>Status: <span id="status1" style="color:green;">Free</span></p>
+</div>
+
+<div>
+<button class="book-btn" onclick="bookRoom(1)">Book</button>
+<button class="cancel-btn" onclick="cancelRoom(1)">Cancel</button>
+<button onclick="viewRoom()">View</button>
+</div>
+</div>
+
+<div class="room">
+<div>
+<h3>Room 102</h3>
+<p>Capacity: 40</p>
+<p>Status: <span id="status2" style="color:red;">Booked</span></p>
+</div>
+
+<div>
+<button class="book-btn" onclick="bookRoom(2)">Book</button>
+<button class="cancel-btn" onclick="cancelRoom(2)">Cancel</button>
+<button onclick="viewRoom()">View</button>
+</div>
+</div>
+
+</div>
+
+<!-- ADD STUDENT -->
+<div class="section admin-only">
+<h2>Add Student</h2>
+
+<form id="form">
+<input type="text" id="name" placeholder="Name" required>
+<input type="number" id="age" placeholder="Age" required>
+<input type="text" id="course" placeholder="Course" required>
+<button type="submit">Add Student</button>
+</form>
+
+</div>
+
+<!-- STUDENTS LIST -->
+<div class="section">
+<h2>Students List</h2>
+<ul id="list"></ul>
+</div>
+
+<!-- POPUP -->
+<div id="popup" style="display:none; position:fixed; top:30%; left:40%; background:white; padding:20px; border:1px solid black;">
+<h3>Classroom View</h3>
+<img src="images/class.jpg" width="200">
+<br><br>
+<button onclick="closeview()">Close</button>
+</div>
+
+<script>
+
+// ROLE
+let role = localStorage.getItem("role");
+document.getElementById("roleText").innerText = "Logged in as: " + role;
+
+// ROLE CONTROL
+if(role === "student"){
+    document.querySelectorAll(".book-btn").forEach(btn => btn.style.display="none");
+    document.querySelectorAll(".cancel-btn").forEach(btn => btn.style.display="none");
+    document.querySelector(".admin-only").style.display="none";
+}
+
+if(role === "faculty"){
+    document.querySelector(".admin-only").style.display="none";
+}
+
+// BOOK
+function bookRoom(id){
+    let status = document.getElementById("status" + id);
+
+    if(status.innerHTML === "Booked"){
+        alert("Already Booked!");
+        return;
+    }
+
+    status.innerHTML = "Booked";
+    status.style.color = "red";
+}
+
+// CANCEL
+function cancelRoom(id){
+    let status = document.getElementById("status" + id);
+
+    status.innerHTML = "Free";
+    status.style.color = "green";
+}
+
+// SEARCH
+function searchRoom(){
+    let input = document.getElementById("search").value.toLowerCase();
+    let rooms = document.getElementsByClassName("room");
+
+    for(let i=0;i<rooms.length;i++){
+        let text = rooms[i].innerText.toLowerCase();
+
+        if(text.includes(input)){
+            rooms[i].style.display="flex";
+        } else {
+            rooms[i].style.display="none";
+        }
+    }
+}
+
+// POPUP
+function viewRoom(){
+    document.getElementById("popup").style.display="block";
+}
+
+function closeview(){
+    document.getElementById("popup").style.display="none";
+}
+
+// ADD STUDENT
+document.getElementById("form").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    let name = document.getElementById("name").value;
+    let age = document.getElementById("age").value;
+    let course = document.getElementById("course").value;
+
+    let student = {name, age, course};
+
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+
+    students.push(student);
+
+    localStorage.setItem("students", JSON.stringify(students));
+
+    alert("Student Added");
+
+    document.getElementById("form").reset();
+
+    loadStudents();
+});
+
+// LOAD STUDENTS
+function loadStudents(){
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+
+    let list = document.getElementById("list");
+    list.innerHTML = "";
+
+    students.forEach(function(s){
+        let li = document.createElement("li");
+        li.innerText = s.name + " | Age: " + s.age + " | Course: " + s.course;
+        list.appendChild(li);
+    });
+}
+
+loadStudents();
+
+</script>
+
+</body>
+</html>

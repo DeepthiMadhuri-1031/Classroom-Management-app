@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Booking History</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.container{
+width:80%;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:10px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+border:1px solid black;
+padding:8px;
+text-align:center;
+}
+
+.free{
+background:green;
+color:white;
+padding:5px;
+}
+
+.booked{
+background:red;
+color:white;
+padding:5px;
+}
+
+input{
+padding:5px;
+margin-bottom:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1 align="center">Booking History</h1>
+
+<div class="container">
+
+<input type="text" placeholder="Search classroom">
+
+<table>
+
+<tr>
+<th>Room</th>
+<th>Date</th>
+<th>Time</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+<tr>
+<td>Room 101</td>
+<td>2026-03-22</td>
+<td>9-10</td>
+<td><span class="free">Booked</span></td>
+<td><button onclick="cancel()">Cancel</button></td>
+</tr>
+
+<tr>
+<td>Lab 1</td>
+<td>2026-03-23</td>
+<td>10-11</td>
+<td><span class="free">Booked</span></td>
+<td><button onclick="cancel()">Cancel</button></td>
+</tr>
+
+<tr>
+<td>Room 102</td>
+<td>2026-03-24</td>
+<td>1-2</td>
+<td><span class="free">Booked</span></td>
+<td><button onclick="cancel()">Cancel</button></td>
+</tr>
+
+</table>
+
+<p id="msg"></p>
+
+</div>
+
+<script>
+
+function cancel()
+{
+document.getElementById("msg").innerHTML =
+"<span class='booked'>Booking Cancelled</span>";
+}
+
+</script>
+
+</body>
+</html>
